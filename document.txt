@@ -1,0 +1,1 @@
+Downloading: "https://github.com/DagnyT/hardnet/raw/master/pretrained/train_liberty_with_aug/checkpoint_liberty_with_aug.pth" to C:\Users\zy7/.cache\torch\hub\checkpoints\checkpoint_liberty_with_aug.pth

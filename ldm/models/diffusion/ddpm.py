@@ -495,6 +495,7 @@ class LatentDiffusion(DDPM):
             param.requires_grad = False
         
         self.embedding_manager = self.instantiate_embedding_manager(personalization_config, self.cond_stage_model)
+        
 
         self.emb_ckpt_counter = 0
         self.mse_loss = nn.MSELoss()
@@ -594,7 +595,14 @@ class LatentDiffusion(DDPM):
     def get_learned_conditioning(self, c, x = None):
         if self.cond_stage_forward is None:
             if hasattr(self.cond_stage_model, 'encode') and callable(self.cond_stage_model.encode):
-                c = self.cond_stage_model.encode(c, embedding_manager=self.embedding_manager, input_img = x)
+                #self.cond_stage_model= self.cond_stage_model.to(torch.device('cuda:1'))
+                #self.cond_stage_model.device = torch.device('cuda:1')
+                #self.embedding_manager = self.embedding_manager.to(torch.device('cuda:1'))
+                ######## various device issue here
+                # tracking record 03/06/2024
+                # call ldm\modules\encoders\modules.py -> FrozenCLIPEmbedder.encode line 337
+                # found the FrozenCLIPEmbedder was loaded with initial setting, in which device was set as "cuda"
+                c = self.cond_stage_model.encode(c, embedding_manager=self.embedding_manager, input_img = x) 
                 if isinstance(c, DiagonalGaussianDistribution):
                     c = c.mode()
             else:

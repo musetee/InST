@@ -15,11 +15,15 @@ class DDIMSampler(object):
         self.model = model
         self.ddpm_num_timesteps = model.num_timesteps
         self.schedule = schedule
+        self.device = self.model.device
+
+        # print model device
+        print(f"DDIMSampler device is {self.model.device}")
 
     def register_buffer(self, name, attr):
         if type(attr) == torch.Tensor:
-            if attr.device != torch.device("cuda"):
-                attr = attr.to(torch.device("cuda"))
+            if attr.device != self.device: #torch.device("cuda")
+                attr = attr.to(self.device) #torch.device("cuda")
         setattr(self, name, attr)
 
     def make_schedule(self, ddim_num_steps, ddim_discretize="uniform", ddim_eta=0., verbose=True):
@@ -118,6 +122,8 @@ class DDIMSampler(object):
                       temperature=1., noise_dropout=0., score_corrector=None, corrector_kwargs=None,
                       unconditional_guidance_scale=1., unconditional_conditioning=None,):
         device = self.model.betas.device
+        #print this betas device
+        print(f"betas device is {device}")
         b = shape[0]
         if x_T is None:
             img = torch.randn(shape, device=device)

@@ -170,6 +170,8 @@ class FrozenCLIPEmbedder(AbstractEncoder):
         self.image_encoder = CLIPModel.from_pretrained(version)
 
         self.device = device
+        # print FrozenCLIPEmbedder device
+        print(f'FrozenCLIPEmbedder device: {device}')
         self.max_length = max_length
         self.freeze()
 
