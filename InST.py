@@ -194,9 +194,9 @@ if __name__ == '__main__':
 
     main(prompt = 'snowboard;colorful', \
         content_dir = './data/origin.jpg', \
-        style_dir = './data/style.png', \
-        ddim_steps = 200, \
-        strength = 0.7, \
+        style_dir = './data/style.jpg', \
+        ddim_steps = 500, \
+        strength = 0.8, \
         seed=4, \
         model = model,
         device = device)
